@@ -20,7 +20,10 @@ RUN printf '%s\n' \
   '    server_name localhost;' \
   '    root /usr/share/nginx/html;' \
   '    index index.html;' \
-  '    location /direct-rules {' \
+  '    location = /direct-rules {' \
+  '        proxy_pass http://mihomo-converter:25600/direct-rules;' \
+  '    }' \
+  '    location = /subconvert/direct-rules {' \
   '        proxy_pass http://mihomo-converter:25600/direct-rules;' \
   '    }' \
   '    location / {' \

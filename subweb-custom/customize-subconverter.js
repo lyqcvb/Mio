@@ -45,9 +45,9 @@ view = replaceRequired(
 
 view = replaceRequired(
   view,
-  /\n\s*<el-col>\n\s*<el-checkbox v-model="form.nodeList" label="输出为 Node List" border><\/el-checkbox>\n\s*<\/el-col>/,
+  /\n\s*<el-form-item label-width="0px">\n\s*<el-row type="flex">[\s\S]*?<\/el-row>\n\s*<\/el-form-item>/,
   "",
-  "remove node list option"
+  "remove advanced option controls"
 );
 
 view = replaceRequired(
@@ -216,7 +216,7 @@ view = replaceRequired(
   /\n\s*backendSearch\(queryString, cb\) \{/,
   `
     directRulesEndpoint() {
-      return "/direct-rules";
+      return "/subconvert/direct-rules";
     },
 
     parseDirectRule(rule) {
