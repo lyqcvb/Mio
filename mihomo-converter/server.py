@@ -142,6 +142,18 @@ def fetch_url(url: str) -> bytes:
         return resp.read()
 
 
+def is_inline_subscription(value: str) -> bool:
+    return bool(re.search(r"(?im)^\s*(vless|hysteria2|hy2)://", value))
+
+
+def read_subscription(source: str) -> str:
+    source = urllib.parse.unquote(source).strip()
+    if is_inline_subscription(source):
+        return source
+    raw = fetch_url(source)
+    return maybe_base64_decode(raw)
+
+
 def maybe_base64_decode(data: bytes) -> str:
     text = data.decode("utf-8", "replace").strip()
     if "://" in text:
@@ -367,8 +379,7 @@ def dump_yaml(value: Any, indent: int = 0) -> list[str]:
 
 
 def convert(source_url: str) -> str:
-    raw = fetch_url(source_url)
-    text = maybe_base64_decode(raw)
+    text = read_subscription(source_url)
     proxies, info_proxies = parse_nodes(text)
     doc = {
         "port": 7890,
@@ -426,6 +437,42 @@ class Handler(BaseHTTPRequestHandler):
         self.send_header("Content-Length", str(len(body)))
         self.end_headers()
         self.wfile.write(body)
+
+    def do_HEAD(self) -> None:
+        parsed = urllib.parse.urlsplit(self.path)
+        if parsed.path == "/version":
+            self.send_response(200)
+            self.send_header("Content-Type", "text/plain; charset=utf-8")
+            self.send_cors_headers()
+            self.send_header("Content-Length", "0")
+            self.end_headers()
+            return
+        if parsed.path == "/direct-rules":
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json; charset=utf-8")
+            self.send_cors_headers()
+            self.send_header("Content-Length", "0")
+            self.end_headers()
+            return
+        if parsed.path != "/sub":
+            self.send_error(404)
+            return
+        query = urllib.parse.parse_qs(parsed.query)
+        source_url = query.get("url", [DEFAULT_SOURCE])[0] or DEFAULT_SOURCE
+        if not source_url:
+            self.send_error(400, "missing subscription url")
+            return
+        try:
+            length = len(convert(source_url).encode("utf-8"))
+        except Exception as exc:
+            self.send_error(502, f"conversion failed: {exc}")
+            return
+        self.send_response(200)
+        self.send_header("Content-Type", "text/yaml; charset=utf-8")
+        self.send_header("Content-Disposition", 'attachment; filename="mihomo.yaml"')
+        self.send_cors_headers()
+        self.send_header("Content-Length", str(length))
+        self.end_headers()
 
     def do_PUT(self) -> None:
         parsed = urllib.parse.urlsplit(self.path)

@@ -1,6 +1,6 @@
 const fs = require("fs");
 
-const backendOrigin = process.env.MIO_BACKEND_ORIGIN || "http://39.106.99.222";
+const backendOrigin = process.env.MIO_BACKEND_ORIGIN || "https://euphonium.top";
 const backendUrl = `${backendOrigin.replace(/\/$/, "")}/sub?`;
 const remoteConfig = "config/myclash.ini";
 
