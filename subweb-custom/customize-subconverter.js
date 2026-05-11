@@ -39,7 +39,14 @@ view = replaceRequired(
 
 view = replaceRequired(
   view,
-  /\n\s*<el-button[\s\S]*?icon="el-icon-upload"[\s\S]*?上传配置\s*<\/el-button>/,
+  /\n\s*<el-form-item label="Include:">[\s\S]*?<\/el-form-item>\n\s*<el-form-item label="Exclude:">[\s\S]*?<\/el-form-item>\n\s*<el-form-item label="FileName:">[\s\S]*?<\/el-form-item>/,
+  "",
+  "remove include exclude filename fields"
+);
+
+view = replaceRequired(
+  view,
+  /\n\s*<el-button\n\s*:style="buttonStyle"\n\s*type="primary"\n\s*@click="dialogUploadConfigVisible = true"\n\s*icon="el-icon-upload"\n\s*:loading="loading">\n\s*上传配置\n\s*<\/el-button>/,
   "",
   "remove upload config button"
 );
