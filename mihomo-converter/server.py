@@ -28,7 +28,7 @@ REGIONS = [
     ("KR", re.compile(r"(韩|韩国|KR|Korea|Seoul|首尔)", re.I)),
 ]
 
-RULES = [
+DEFAULT_PERSONAL_DIRECT_RULES = [
     "DOMAIN,invite.linuxdo.org,DIRECT",
     "DOMAIN-SUFFIX,kuakeba.cn,DIRECT",
     "DOMAIN-KEYWORD,ysu.edu.cn,DIRECT",
@@ -45,6 +45,9 @@ RULES = [
     "DOMAIN,ss0.baidu.com,DIRECT",
     "DOMAIN-SUFFIX,ruijie.com.cn,DIRECT",
     "IP-CIDR,124.124.124.124/32,DIRECT,no-resolve",
+]
+
+BASE_RULES = [
     "DOMAIN-SUFFIX,local,国内直连",
     "DOMAIN-SUFFIX,localhost,国内直连",
     "DOMAIN-SUFFIX,lan,国内直连",
@@ -109,11 +112,13 @@ RULES = [
 
 
 def load_rules() -> list[str]:
+    if DIRECT_RULES_FILE and not os.path.exists(DIRECT_RULES_FILE):
+        save_rules("\n".join(DEFAULT_PERSONAL_DIRECT_RULES))
     if DIRECT_RULES_FILE and os.path.exists(DIRECT_RULES_FILE):
         with open(DIRECT_RULES_FILE, "r", encoding="utf-8") as fp:
             rules = [line.strip() for line in fp if line.strip() and not line.lstrip().startswith(("#", ";"))]
         return rules
-    return list(RULES)
+    return list(DEFAULT_PERSONAL_DIRECT_RULES)
 
 
 def save_rules(text: str) -> list[str]:
@@ -124,6 +129,11 @@ def save_rules(text: str) -> list[str]:
     with open(DIRECT_RULES_FILE, "w", encoding="utf-8") as fp:
         fp.write("\n".join(rules) + ("\n" if rules else ""))
     return rules
+
+
+def build_rules() -> list[str]:
+    personal_rules = load_rules()
+    return personal_rules + list(BASE_RULES)
 
 
 def fetch_url(url: str) -> bytes:
@@ -369,7 +379,7 @@ def convert(source_url: str) -> str:
         "external-controller": "127.0.0.1:9090",
         "proxies": info_proxies + proxies,
         "proxy-groups": build_groups(proxies, info_proxies),
-        "rules": load_rules(),
+        "rules": build_rules(),
     }
     return "\n".join(dump_yaml(doc)) + "\n"
 

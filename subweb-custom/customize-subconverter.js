@@ -110,7 +110,7 @@ view = replaceRequired(
           <div class="direct-rule-row">
             <label>代理策略</label>
             <el-select v-model="directRuleForm.policy" placeholder="代理策略">
-              <el-option label="直接连接 (DIRECT)" value="国内直连"></el-option>
+              <el-option label="直接连接 (DIRECT)" value="DIRECT"></el-option>
             </el-select>
           </div>
           <el-button class="direct-rule-add" type="primary" icon="el-icon-top" @click="addDirectRule('prepend')">添加前置规则</el-button>
@@ -126,7 +126,7 @@ view = replaceRequired(
                 <strong>{{ rule.value }}</strong>
                 <div class="direct-rule-type">{{ rule.type }}</div>
               </div>
-              <span class="direct-rule-policy">DIRECT</span>
+              <span class="direct-rule-policy">{{ rule.policy }}</span>
               <el-button class="direct-rule-delete" type="text" icon="el-icon-delete-solid" @click="removeDirectRule(rule.raw)"></el-button>
             </article>
             <el-empty v-if="filteredDirectRuleCards.length === 0" description="暂无规则"></el-empty>
@@ -167,7 +167,7 @@ view = replaceRequired(
       directRuleForm: {
         type: "DOMAIN-SUFFIX",
         value: "",
-        policy: "国内直连"
+        policy: "DIRECT"
       },
       directRuleTypes: [
         { label: "匹配完整域名 (DOMAIN)", value: "DOMAIN" },
@@ -225,7 +225,7 @@ view = replaceRequired(
         raw: rule,
         type: parts[0] || "DOMAIN-SUFFIX",
         value: parts[1] || rule,
-        policy: parts[2] || "国内直连"
+        policy: parts[2] || "DIRECT"
       };
     },
 
