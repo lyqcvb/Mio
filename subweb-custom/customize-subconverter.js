@@ -2,7 +2,6 @@ const fs = require("fs");
 
 const backendOrigin = process.env.MIO_BACKEND_ORIGIN || "http://39.106.99.222";
 const backendUrl = `${backendOrigin.replace(/\/$/, "")}/sub?`;
-const directRulesUrl = `${backendOrigin.replace(/\/$/, "")}/direct-rules`;
 const remoteConfig = "config/myclash.ini";
 
 function replaceRequired(source, pattern, replacement, label) {
@@ -42,6 +41,13 @@ view = replaceRequired(
   /\n\s*<el-form-item label="Include:">[\s\S]*?<\/el-form-item>\n\s*<el-form-item label="Exclude:">[\s\S]*?<\/el-form-item>\n\s*<el-form-item label="FileName:">[\s\S]*?<\/el-form-item>/,
   "",
   "remove include exclude filename fields"
+);
+
+view = replaceRequired(
+  view,
+  /\n\s*<el-col>\n\s*<el-checkbox v-model="form.nodeList" label="输出为 Node List" border><\/el-checkbox>\n\s*<\/el-col>/,
+  "",
+  "remove node list option"
 );
 
 view = replaceRequired(
@@ -210,7 +216,7 @@ view = replaceRequired(
   /\n\s*backendSearch\(queryString, cb\) \{/,
   `
     directRulesEndpoint() {
-      return "${directRulesUrl}";
+      return "/direct-rules";
     },
 
     parseDirectRule(rule) {
