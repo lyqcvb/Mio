@@ -1,0 +1,92 @@
+; =========================
+; 自定义强制直连规则
+; =========================
+
+DIRECT,[]DOMAIN,invite.linuxdo.org
+DIRECT,[]DOMAIN-SUFFIX,kuakeba.cn
+DIRECT,[]DOMAIN-KEYWORD,ysu.edu.cn
+DIRECT,[]DOMAIN-SUFFIX,bing.com
+DIRECT,[]DOMAIN-SUFFIX,hltv.org
+DIRECT,[]DOMAIN-SUFFIX,aminer.cn
+DIRECT,[]DOMAIN-KEYWORD,bangumi
+DIRECT,[]DOMAIN-SUFFIX,kuafuzy.com
+DIRECT,[]DOMAIN-SUFFIX,steamserver.net
+DIRECT,[]DOMAIN-KEYWORD,ysu.edu
+DIRECT,[]DOMAIN-KEYWORD,microsoft
+DIRECT,[]DOMAIN,auth1.ysu.edu.cn
+DIRECT,[]DOMAIN-SUFFIX,ysu.edu.cn
+DIRECT,[]DOMAIN,ss0.baidu.com
+DIRECT,[]DOMAIN-SUFFIX,ruijie.com.cn
+DIRECT,[]IP-CIDR,124.124.124.124/32,no-resolve
+
+; =========================
+; 局域网 / 私有地址 / 保留地址直连
+; =========================
+
+国内直连,[]DOMAIN-SUFFIX,local
+国内直连,[]DOMAIN-SUFFIX,localhost
+国内直连,[]DOMAIN-SUFFIX,lan
+国内直连,[]IP-CIDR,10.0.0.0/8,no-resolve
+国内直连,[]IP-CIDR,100.64.0.0/10,no-resolve
+国内直连,[]IP-CIDR,127.0.0.0/8,no-resolve
+国内直连,[]IP-CIDR,169.254.0.0/16,no-resolve
+国内直连,[]IP-CIDR,172.16.0.0/12,no-resolve
+国内直连,[]IP-CIDR,192.168.0.0/16,no-resolve
+
+; =========================
+; OpenAI / AI 服务
+; =========================
+
+OpenAI,[]DOMAIN-SUFFIX,openai.com
+OpenAI,[]DOMAIN-SUFFIX,chatgpt.com
+OpenAI,[]DOMAIN-SUFFIX,oaistatic.com
+OpenAI,[]DOMAIN-SUFFIX,oaiusercontent.com
+
+; =========================
+; Telegram
+; =========================
+
+Telegram,[]DOMAIN-SUFFIX,t.me
+Telegram,[]DOMAIN-SUFFIX,telegram.org
+Telegram,[]DOMAIN-SUFFIX,telegram.me
+Telegram,[]DOMAIN-SUFFIX,telegra.ph
+Telegram,[]IP-CIDR,91.108.4.0/22,no-resolve
+Telegram,[]IP-CIDR,91.108.8.0/22,no-resolve
+Telegram,[]IP-CIDR,91.108.12.0/22,no-resolve
+Telegram,[]IP-CIDR,91.108.16.0/22,no-resolve
+Telegram,[]IP-CIDR,91.108.56.0/22,no-resolve
+Telegram,[]IP-CIDR,149.154.160.0/20,no-resolve
+
+; =========================
+; YouTube / Netflix / 国外媒体
+; =========================
+
+YouTube,[]DOMAIN-SUFFIX,youtube.com
+YouTube,[]DOMAIN-SUFFIX,ytimg.com
+YouTube,[]DOMAIN-SUFFIX,googlevideo.com
+YouTube,[]DOMAIN-SUFFIX,youtu.be
+YouTube,[]DOMAIN-SUFFIX,youtubei.googleapis.com
+
+Netflix,[]DOMAIN-SUFFIX,netflix.com
+Netflix,[]DOMAIN-SUFFIX,netflix.net
+Netflix,[]DOMAIN-SUFFIX,nflxext.com
+Netflix,[]DOMAIN-SUFFIX,nflximg.net
+Netflix,[]DOMAIN-SUFFIX,nflxvideo.net
+
+国外媒体,[]DOMAIN-SUFFIX,disneyplus.com
+
+; =========================
+; 苹果服务
+; =========================
+
+苹果服务,[]DOMAIN-SUFFIX,apple.com
+苹果服务,[]DOMAIN-SUFFIX,icloud.com
+苹果服务,[]DOMAIN-SUFFIX,cdn-apple.com
+苹果服务,[]DOMAIN-SUFFIX,mzstatic.com
+
+; =========================
+; 兜底
+; =========================
+
+国内直连,[]GEOIP,CN
+漏网之鱼,[]FINAL

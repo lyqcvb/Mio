@@ -1,0 +1,36 @@
+name: mio
+
+services:
+  subconverter:
+    build:
+      context: .
+    image: mio/subconverter:latest
+    container_name: subconverter
+    restart: always
+    ports:
+      - "127.0.0.1:25500:25500"
+    volumes:
+      - ./replacements/pref.toml:/base/pref.toml:ro
+      - ./replacements/config:/base/config:ro
+      - ./replacements/snippets:/base/snippets:ro
+
+  mihomo-converter:
+    build: ./mihomo-converter
+    image: mio/mihomo-converter:latest
+    container_name: mihomo-converter
+    restart: always
+    environment:
+      DIRECT_RULES_FILE: /data/direct-rules.txt
+      DEFAULT_SOURCE_URL: ${DEFAULT_SOURCE_URL:-}
+    ports:
+      - "127.0.0.1:25600:25600"
+    volumes:
+      - ./mihomo-converter/direct-rules.txt:/data/direct-rules.txt
+
+  subweb:
+    build: ./subweb-custom
+    image: mio/subweb:latest
+    container_name: subweb
+    restart: always
+    ports:
+      - "127.0.0.1:58080:80"
